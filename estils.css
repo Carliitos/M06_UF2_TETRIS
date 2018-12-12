@@ -1,0 +1,46 @@
+canvas#pieza {
+    
+
+}
+
+canvas#nextPieza {
+    
+}
+#pieces{
+	display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: stretch;
+    align-items: flex-start;
+    color: white;
+}
+canvas#mapa {
+
+}
+body{
+	font-family: 'Varela Round', sans-serif;
+	margin-left: 7rem;
+	display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: stretch;
+    align-items: center;
+    background-color: #8529B8; 
+}
+
+@keyframes colorchange
+    {
+      0%  {background: #4C35BD;}
+      25%   {background: #8529B8;}
+      50%  {background: #20AF9B;}
+      75%  {background: #b925b3;}
+      100%  {background: #4C35BD;}
+    }
+canvas#mapa {
+	margin-top: 2rem;
+    margin-right: 3rem;
+    margin-right: 3rem;
+    box-shadow: 0 0 20px #4f9;
+}

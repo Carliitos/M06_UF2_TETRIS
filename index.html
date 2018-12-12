@@ -1,10 +1,28 @@
 <!DOCTYPE html>
 <html>
 <header>
-<link rel="stylesheet" type="text/css" href="estil.css">
-<link href="https://fonts.googleapis.com/css?family=Allerta+Stencil" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="estils.css">
+<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+<title>TETRIS</title>
 </header>
 <body id="all">
+    <img src="colores/amarillo.png" id="amarillo" style="display: none;">
+    <img src="colores/azul.png" id="azul" style="display: none;">
+    <img src="colores/azulMarino.png" id="azulMarino" style="display: none;">
+    <img src="colores/gris.png" id="gris" style="display: none;">
+    <img src="colores/lila.png" id="lila" style="display: none;">
+    <img src="colores/naranja.png" id="naranja" style="display: none;">
+    <img src="colores/rojo.png" id="rojo" style="display: none;">
+    <img src="colores/rosa.png" id="rosa" style="display: none;">
+    <img src="colores/verde.png" id="verde" style="display: none;">
+
+    <canvas id="mapa" width="300" height="650"> </canvas>
+    <div id="pieces">
+    	Pieza actual: 
+    <canvas  id="pieza" width="182" height="182"></canvas>
+    	Siguiente pieza:
+    <canvas  id="nextPieza" width="182" height="182"></canvas>	
+    </div>
     
     <script src="tetris.js"></script>
     
