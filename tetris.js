@@ -25,25 +25,26 @@ var Tetris = {
 	[0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0]
+	[0,0,0,0,0,1,1,1,1,1],
+	[1,1,1,1,1,1,1,1,1,1]
 	],
 	puntuacio: 0,
 	maxPoints: 0,
 	pieza: null,
+	letra: 0,
 	nextPieza: null,
 	comptador: [0, 0, 0, 0, 0, 0, 0],
-	interval: 500,
+	interval: 200,
 	inicialitzar: function() {
 		var primeraPieza = randomPieza(); 
 		Tetris.pieza = new Pieza(primeraPieza[0],primeraPieza[1],0,0);
 		var siguientePieza = randomPieza();
-		Tetris.nextPieza= new Pieza(siguientePieza[0],siguientePieza[1],0,0);;
+		Tetris.nextPieza= new Pieza(siguientePieza[0],siguientePieza[1],0,0);
 					//i, j, l, o, s, t, z
 		puntuacio=0;
 		comptador = [0, 0, 0, 0, 0, 0, 0];
 		interval = 1000;
-		console.log(Tetris.pieza);
-		console.log(Tetris.nextPieza);
+
 	},
 	nextPiece: function() {
 		return Math.floor(Math.random() * 7) + 0;
@@ -52,30 +53,85 @@ var Tetris = {
 
 	},
 	moviment: function() {
+		var bajar = Tetris.comprovarBaixar();
+		console.log("Se puede bajar? "+bajar)
 		console.log(this.pieza.y);
-	// 	if(comprovarBaixar()==true){
+	 	if(bajar==true){
 	 	this.pieza.y++;
-	// }
+	 }else{
+
+	 }
 
 	},
-	comprovarBaixar: function(){
-		for(var i = 0; i<=this.map.length;i++){
-			for(var j=0;j<=3;j++){
+	siguiente: function(){
+		this.pieza=this.nextPieza;
+		var siguientePieza = randomPieza();
+		this.nextPieza= new Pieza(siguientePieza[0],siguientePieza[1],0,0);
+		peque(Tetris.pieza, "pieza");
+		peque(Tetris.nextPieza, "nextPieza");
+	},
 
+	comprovarBaixar: function(){
+		var letra;
+
+		for(var n = 0; n<this.pieza.forma.length;n++){
+			for(var m = 0; m<this.pieza.forma[0].length;m++){
+			if(this.pieza.forma[n][m]!=0){
+				letra = this.pieza.forma[n][m];
 			}
 		}
+		}
+
+		var comprovar = true;
+		for(var i = this.pieza.y; i<=this.pieza.y+4;i++){
+			for(var j=this.pieza.x;j<=this.pieza.x+4;j++){
+
+				//if(this.mapa[j][i+1]!=0&&this.mapa[j][i]==this.pieza.forma[2][1]&&this.mapa[j][i+1]!=this.pieza.forma[2][1]){
+				if(this.mapa[i][j]!=="undefined"){
+				if(this.mapa[i][j]==letra&&this.mapa[i+1][j]!=letra&&this.mapa[i+1][j]!=0){
+					comprovar = false;
+
+						for(var i = 0; i <this.mapa.length;i++){
+						for(var j = 0; j<this.mapa[0].length;j++){
+							if(this.mapa[i][j]==letra){
+								this.mapa[i][j]=1;
+							}
+						}
+					}
+				
+					
+				}
+			}
+			}
+		}
+		if(comprovar==false){
+			Tetris.siguiente();
+		}
+		return comprovar;
 	},
 	controlador: function(){
 		Tetris.moviment();
 		Tetris.insert();
+
 		mostrarMapa();
 
 	},
+
 	insert: function(){
+		console.log("La forma es: "+this.pieza.forma[1][0]);
+		for(var i = 0; i <this.mapa.length;i++){
+			for(var j = 0; j<this.mapa[0].length;j++){
+				if(this.mapa[i][j]==this.pieza.forma[2][1]){
+					this.mapa[i][j]=0;
+				}
+			}
+		}
 
 		for(var i = 0; i <4;i++){
 			for(var j = 0; j<4;j++){
+				if(this.mapa[i+this.pieza.y][j+this.pieza.x]!=1){
 				this.mapa[i+this.pieza.y][j+this.pieza.x]=this.pieza.forma[i][j];
+			}
 			}
 		}
 	}
@@ -85,14 +141,15 @@ var Tetris = {
 
 function randomPieza()
          { var peces = [
-                 [[[0,0,0,0],[0,"r","r",0],[0,"r","r",0],[0,0,0,0]],"groc"],
-                 [[[0,"a",0,0],[0,"a",0,0],[0,"a",0,0],[0,"a",0,0]],"lila"],
-                 [[[0,0,0,0],[0,"g","g",0],["g","g",0,0],[0,0,0,0]],"verd"],
-                 [[[0,0,0,0],[0,"l","l",0],[0,0,"l","l"],[0,0,0,0]],"roig"],
-                 [[[0,"n",0,0],[0,"n",0,0],[0,"n","n",0],[0,0,0,0]],"blau"],
-                 [[[0,"s","s",0],[0,"s",0,0],[0,"s",0,0],[0,0,0,0]],"taronga"],
-                 [[[0,0,0,0],["v","v","v",0],[0,"v",0,0],[0,0,0,0]],"morat"] ]
-           var numeroAleatori = Math.round(Math.random()*6);                      
+                 [[[0,0,0,0],[0,"r","r",0],[0,"r","r",0],[0,0,0,0]],"r"],
+                 [[[0,"a",0,0],[0,"a",0,0],[0,"a",0,0],[0,"a",0,0]],"a"],
+                 [[[0,0,0,0],[0,"g","g",0],["g","g",0,0],[0,0,0,0]],"g"],
+                 [[[0,0,0,0],[0,"l","l",0],[0,0,"l","l"],[0,0,0,0]],"l"],
+                 [[[0,"n",0,0],[0,"n",0,0],[0,"n","n",0],[0,0,0,0]],"n"],
+                 [[[0,"s","s",0],[0,"s",0,0],[0,"s",0,0],[0,0,0,0]],"s"],
+                 [[[0,0,0,0],["v","v","v",0],[0,"v",0,0],[0,0,0,0]],"v"] ]
+           var numeroAleatori = Math.round(Math.random()*6); 
+           Tetris.letra = peces[numeroAleatori][1]                     
            return peces[numeroAleatori];     
        }
 
@@ -246,7 +303,7 @@ var Pieza = function (forma, color, x, y)
 				peque(Tetris.pieza, "pieza");
 				peque(Tetris.nextPieza, "nextPieza");
 
-				var pacoMan = setInterval(Tetris.controlador, Tetris.interval);
+				var tetris = setInterval(Tetris.controlador, Tetris.interval);
 
 				
 
