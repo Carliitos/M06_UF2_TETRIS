@@ -35,6 +35,7 @@ var Tetris = {
 	nextPieza: null,
 	comptador: [0, 0, 0, 0, 0, 0, 0],
 	interval: 200,
+	tecla: null,
 	inicialitzar: function() {
 		var primeraPieza = randomPieza(); 
 		Tetris.pieza = new Pieza(primeraPieza[0],primeraPieza[1],0,0);
@@ -49,17 +50,24 @@ var Tetris = {
 	nextPiece: function() {
 		return Math.floor(Math.random() * 7) + 0;
 	},
-	tecles: function() {
-
-	},
 	moviment: function() {
 		var bajar = Tetris.comprovarBaixar();
-		console.log("Se puede bajar? "+bajar)
-		console.log(this.pieza.y);
 	 	if(bajar==true){
 	 	this.pieza.y++;
 	 }else{
 
+	 }
+	 if(this.tecla==1){
+			this.pieza.x++;
+			
+	 }else{
+	 	if(this.tecla==3){
+			this.pieza.x--;
+			
+	 }
+	 if(this.tecla==0){
+	 	rotarDreta();
+	 }
 	 }
 
 	},
@@ -110,15 +118,16 @@ var Tetris = {
 		return comprovar;
 	},
 	controlador: function(){
+		document.onkeydown = teclat;
 		Tetris.moviment();
 		Tetris.insert();
-
+		Tetris.tecla=4;
+		console.log("La direccio del teclat: "+Tetris.tecla)
 		mostrarMapa();
 
 	},
 
 	insert: function(){
-		console.log("La forma es: "+this.pieza.forma[1][0]);
 		for(var i = 0; i <this.mapa.length;i++){
 			for(var j = 0; j<this.mapa[0].length;j++){
 				if(this.mapa[i][j]==this.pieza.forma[2][1]){
@@ -153,6 +162,25 @@ function randomPieza()
            return peces[numeroAleatori];     
        }
 
+function teclat(e){ 
+	this.tecla = 4;
+	var key = document.all ? e.which : e.key;
+	if (key == "ArrowUp"){
+		Tetris.tecla = 0; //arriba
+	}
+	else if (key == "ArrowRight"){
+		Tetris.tecla = 1; //derecha
+	}
+	else if (key=="ArrowDown"){
+		Tetris.tecla = 2; //abajo
+	}	
+	else if (key =="ArrowLeft"){
+		Tetris.tecla = 3; //izquierda
+	}else Tetris.tecla = 4;
+	key = null;
+	e = null;
+	
+}
 var Pieza = function (forma, color, x, y)
             {
                 this.forma = forma;
@@ -280,15 +308,15 @@ var Pieza = function (forma, color, x, y)
 		}
 		}
 
-         Pieza.prototype.rotarDreta = function () {
+         rotarDreta = function () {
             var formaNova = new Array();
-            for (var i=0;i<this.forma.length;i++) {
+            for (var i=0;i<Tetris.pieza.forma.length;i++) {
                 formaNova[i]=new Array();
-                for (var j=0;j<this.forma[i].length;j++) {
-                    formaNova[i][j]=this.forma[this.forma[i].length-1-j][i];
+                for (var j=0;j<Tetris.pieza.forma[i].length;j++) {
+                    formaNova[i][j]=Tetris.pieza.forma[Tetris.pieza.forma[i].length-1-j][i];
                 }
             }
-            this.forma = formaNova;
+            Tetris.pieza.forma = formaNova;
             }  
             Pieza.prototype.rotarEsquerra = function () {
             	Pieza.rotarEsquerra();
