@@ -6,6 +6,10 @@
 <title>TETRIS</title>
 </header>
 <body id="all">
+    <div id="lost">
+        Has perdido!<br>
+        <button class="lost" onClick="window.location.reload()">Juga de nou!</button>
+    </div>
     <img src="colores/amarillo.png" id="amarillo" style="display: none;">
     <img src="colores/azul.png" id="azul" style="display: none;">
     <img src="colores/azulMarino.png" id="azulMarino" style="display: none;">
@@ -21,7 +25,11 @@
     	Pieza actual: 
     <canvas  id="pieza" width="182" height="182"></canvas>
     	Siguiente pieza:
-    <canvas  id="nextPieza" width="182" height="182"></canvas>	
+    <canvas  id="nextPieza" width="182" height="182"></canvas>
+    <div id="puntuacio">Puntuació: 0</div>	
+    <div id="max">Puntuació Màxima: 0</div>
+    <div id="nivell">Nivell: 0</div>  
+
     </div>
     
     <script src="tetris.js"></script>
