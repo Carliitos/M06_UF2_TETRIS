@@ -31,6 +31,8 @@ var Tetris = {
 	puntuacio: 0,
 	maxPoints: 0,
 	pieza: null,
+	play: true,
+	piezas: 0,
 	nivell: 0,
 	nextPieza: null,
 	comptador: [0, 0, 0, 0, 0, 0, 0],
@@ -43,7 +45,7 @@ var Tetris = {
 		Tetris.nextPieza = new Pieza(siguientePieza[0], siguientePieza[1], 0, 0);
 		puntuacio = 0;
 		comptador = [0, 0, 0, 0, 0, 0, 0];
-		interval = 500;
+		interval = 1000;
 
 	},
 	moviment: function () {
@@ -60,18 +62,20 @@ var Tetris = {
 				}
 			}
 			this.puntuacio= this.puntuacio+10;
-			if(this.puntuacio%100==0){
+			if(this.piezas==10){
 			this.puntuacio=this.puntuacio+20;
 			this.nivell++;
-			this.interval=this.interval-this.interval*10/100;
+			this.piezas=0;
+			this.interval=this.interval*0.9;
+				clearInterval(tetris);
+				tetris = setInterval(Tetris.controlador, Tetris.interval);
 			}
-			document.getElementById("puntuacio").innerHTML = "Puntuació: " + this.puntuacio;
 			document.getElementById("nivell").innerHTML = "Nivell: " + this.nivell;
 			if(this.puntuacio>sessionStorage.getItem("MaxPoints")){
 				sessionStorage.setItem("MaxPoints", this.puntuacio);
 			}
+			document.getElementById("puntuacio").innerHTML = "Puntuació: " + this.puntuacio;
 			document.getElementById("max").innerHTML = "Puntuació Màxima: " + sessionStorage.getItem("MaxPoints");
-			console.log(this.interval);
 			Tetris.siguiente();
 		}
 		if (this.tecla == 1) {
@@ -87,9 +91,11 @@ var Tetris = {
 					this.pieza.x++;
 				}
 			}if (this.tecla == 2) {
-			if (Tetris.comprovarBaixar(1)) {
+				if (Tetris.comprovarBaixar(1)) {
 				this.pieza.y++;
-			}
+				this.puntuacio++;
+				document.getElementById("puntuacio").innerHTML = "Puntuació: " + this.puntuacio;
+				}
 
 		}
 			if (this.tecla == 0) {
@@ -107,8 +113,9 @@ var Tetris = {
 		this.nextPieza = new Pieza(siguientePieza[0], siguientePieza[1], 0, 0);
 		peque(Tetris.pieza, "pieza");
 		peque(Tetris.nextPieza, "nextPieza");
+		this.piezas++;
+		console.log("num de piezas: "+this.piezas);
 	},
-
 	comprovarBaixar: function (opcio) {
 
 		switch (opcio) {
@@ -136,7 +143,6 @@ var Tetris = {
 							if (this.mapa[this.pieza.y + i][this.pieza.x + j] == 1) {
 								return false;
 							}
-
 						}
 					}
 				}
@@ -151,7 +157,6 @@ var Tetris = {
 							if (this.mapa[this.pieza.y + i][this.pieza.x + j] == 1) {
 								return false;
 							}
-
 						}
 					}
 				}
@@ -159,6 +164,9 @@ var Tetris = {
 			case 4:
 				for (var i = 0; i < 4; i++) {
 					for (var j = 0; j < 4; j++) {
+						if ((this.pieza.x + j) < 0 || (this.pieza.x + j) > 9) {
+								return false;
+							}
 						if (this.mapa[i + this.pieza.y + 1][j + this.pieza.x] == 1) {
 
 							return true;
@@ -167,18 +175,16 @@ var Tetris = {
 				}
 				return false;
 		}
-
 	},
-
 	controlador: function () {
 		document.onkeydown = teclat;
+		Tetris.complert();
 		Tetris.moviment();
 		Tetris.insert();
 		Tetris.tecla = 4;
-		Tetris.complert();
+
 		mostrarMapa();
-
-
+		
 	},
 	complert: function(){
 		for (var i = 0; i < this.mapa.length; i++) {
@@ -194,8 +200,6 @@ var Tetris = {
 				}
 			}
 			if(complet){
-				console.log("AAAA");
-
 				var pos = i;
 				for(var n = i-1;n>=0;n--){
 					
@@ -209,7 +213,7 @@ var Tetris = {
 			}
 				
 				else{
-				console.log("ninguno");
+				//console.log("ninguno");
 			}
 		}
 	},
